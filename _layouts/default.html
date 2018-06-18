@@ -4,3 +4,10 @@
 
 Hallo {{ page.rdf }}
 
+{% assign results = page.rdf | sparql_query: "select ?p ?o where {?resourceUri ?p ?o}" %}
+
+<ul>
+{% for row in results %}
+<li> {{ row.p }}: {{ row.o }} </li>
+{% endfor %}
+</ul>
