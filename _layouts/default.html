@@ -4,7 +4,6 @@ rdf_prefix_path: "prefix.sparql"
 
 Hallo {{ page.rdf }}
 
-{% assign results = page.rdf | sparql_query: "select ?p ?o where {?resourceUri ?p ?o}" %}
 
 <h2>Author:</h2>
 
@@ -12,8 +11,10 @@ Hallo {{ page.rdf }}
 {% assign publications = page.rdf | rdf_property: "dblps:authorOf", nil, true %}
 
 {% for publication in publications %}
-  {% if publication.page_url %}
-    <li><a href="{{ publication.page_url }}">{{ publication }}</a></li>
+  {% if publication %}
+    <li><a href="{{ publication.page_url | prepend: site.baseurl }}">{{ publication }}</a>
+	    ({{ publication | rdf_property: "dblps:title"}})
+    </li>
   {% else %}
     <li>{{ publication }}</li>
   {% endif %}
@@ -21,7 +22,9 @@ Hallo {{ page.rdf }}
 	
 </ul>
 
+{% assign results = page.rdf | sparql_query: "select ?p ?o where {?resourceUri ?p ?o} order by ?p" %}
 <ul>
+
 {% for row in results %}
 <li> {{ row.p }}: {{ row.o }} </li>
 {% endfor %}
