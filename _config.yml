@@ -1,13 +1,13 @@
-baseurl: "/simpsons"
-url: "http://example.org"
+baseurl: "/"
+url: "https://dblp.org"
 
 plugins:
     - jekyll-rdf
 
 jekyll_rdf:
-    path: "_data/data.ttl"
+    path: "dblp_natanael.nt"
     default_template: "default.html"
-    restriction: "SELECT ?resourceUri WHERE { ?resourceUri ?p ?o . FILTER regex(str(?resourceUri), \"http://example.org/simpsons\")  }"
+    restriction: "SELECT ?resourceUri WHERE { ?resourceUri ?p ?o . FILTER regex(str(?resourceUri), \"https://dblp.org\")  }"
     class_template_mappings:
         "http://xmlns.com/foaf/0.1/Person": "person.html"
     instance_template_mappings:
