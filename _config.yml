@@ -1,0 +1,14 @@
+baseurl: "/simpsons"
+url: "http://example.org"
+
+plugins:
+    - jekyll-rdf
+
+jekyll_rdf:
+    path: "_data/data.ttl"
+    default_template: "default.html"
+    restriction: "SELECT ?resourceUri WHERE { ?resourceUri ?p ?o . FILTER regex(str(?resourceUri), \"http://example.org/simpsons\")  }"
+    class_template_mappings:
+        "http://xmlns.com/foaf/0.1/Person": "person.html"
+    instance_template_mappings:
+        "http://example.org/simpsons/Abraham": "abraham.html"
