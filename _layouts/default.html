@@ -6,6 +6,17 @@ Hallo {{ page.rdf }}
 
 {% assign results = page.rdf | sparql_query: "select ?p ?o where {?resourceUri ?p ?o}" %}
 
+<h2>Author:</h2>
+
+<ul>
+{% assign publications = page.rdf | rdf_property: "<https://dblp.uni-trier.de/rdf/schema-2017-04-18#authorOf>", nil, true %}
+
+{% for publication in publications %}
+<li>{{ publication }}</li>
+{% endfor %}
+	
+</ul>
+
 <ul>
 {% for row in results %}
 <li> {{ row.p }}: {{ row.o }} </li>
