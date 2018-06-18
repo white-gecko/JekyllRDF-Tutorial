@@ -1,5 +1,5 @@
 ---
-
+rdf_prefix_path: "prefix.sparql"
 ---
 
 Hallo {{ page.rdf }}
@@ -9,7 +9,7 @@ Hallo {{ page.rdf }}
 <h2>Author:</h2>
 
 <ul>
-{% assign publications = page.rdf | rdf_property: "<https://dblp.uni-trier.de/rdf/schema-2017-04-18#authorOf>", nil, true %}
+{% assign publications = page.rdf | rdf_property: "dblps:authorOf", nil, true %}
 
 {% for publication in publications %}
 <li>{{ publication }}</li>
