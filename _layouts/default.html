@@ -12,7 +12,11 @@ Hallo {{ page.rdf }}
 {% assign publications = page.rdf | rdf_property: "dblps:authorOf", nil, true %}
 
 {% for publication in publications %}
-<li>{{ publication }}</li>
+  {% if publication.page_url %}
+    <li><a href="{{ publication.page_url }}">{{ publication }}</a></li>
+  {% else %}
+    <li>{{ publication }}</li>
+  {% endif %}
 {% endfor %}
 	
 </ul>
