@@ -1,0 +1,10 @@
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://example.org" # the base hostname & protocol for your site, e.g. http://example.com
+
+plugins:
+   - jekyll-rdf
+
+# Jekyll RDF settings
+jekyll_rdf:
+    path: "_data/graph.ttl"
+    default_template: "default"

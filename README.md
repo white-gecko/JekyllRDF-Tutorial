@@ -24,3 +24,27 @@ Now we are going to install Jekyll-RDF into the current directory using Bundler.
     end
 
     $ bundle install --path .vendor/bundle
+
+## 3. Configure Jekyll and Jekyll-RDF
+
+The configuration for Jekyll and Jekyll-RDF is happening in the `_config.yml` file. You can find more information about possible Jekyll configration parameters in the [Jekyll Documentation](https://jekyllrb.com/docs/configuration/). More information about the Jekyll-RDF configuration in the [Jekyll-RDF README](https://github.com/white-gecko/jekyll-rdf/blob/develop/README.md#configuration).
+
+In lines 1 and 2 we configure the base URL (combined of hostname, protocol, and path) for Jekyll. This URL is also used by Jekyll-RDF to define the base for the rendering of the resource pages.
+
+In lines 4 and 5 we tell Jekyll to activate the Jekyll-RDF plugin, which we have installed in the previous step (*2. Install Jekyll and Jekyll-RDF*).
+
+Starting from line 8 we define the configuration parameters specific to Jekyll-RDF.
+In line 9 we specify the path to our RDF graph file using the `path` key.
+In line 10 we define which template should be used per default to render a resource using the `default_template` key.
+
+    $ cat -n _config.yml
+         1	baseurl: "" # the subpath of your site, e.g. /blog
+         2	url: "http://example.org" # the base hostname & protocol for your site, e.g. http://example.com
+         3
+         4	plugins:
+         5	   - jekyll-rdf
+         6
+         7	# Jekyll RDF settings
+         8	jekyll_rdf:
+         9	    path: "_data/graph.ttl"
+        10	    default_template: "default"
