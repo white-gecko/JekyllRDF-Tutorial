@@ -48,3 +48,20 @@ In line 10 we define which template should be used per default to render a resou
          8	jekyll_rdf:
          9	    path: "_data/graph.ttl"
         10	    default_template: "default"
+
+## 4. Create a Jekyll-RDF Template
+
+In the last step we have configured Jekyll RDF to use a default template but we did not create any template so far.
+To create a new template we have to create a new file in the `_layouts` directory.
+In our example we call this file `default.html` to match the previous configuration.
+Below you can find our very simple initial template.
+
+In the lines 1 and 2 we create the minimal YAML [front matter](https://jekyllrb.com/docs/frontmatter/) as it is required for Jekyll.
+In line 4 we define some text to print on the resulting pages that consists of the string `Hello` followed the liquid syntax to print the value of a variable `{{ … }}`.
+Here we return the variable `page.rdf` which will result in the IRI of the currently rendered RDF resource.
+
+    $ cat -n _layouts/default.html
+         1	---
+         2	---
+         3
+         4	Hello {{ page.rdf }}
