@@ -65,3 +65,38 @@ Here we return the variable `page.rdf` which will result in the IRI of the curre
          2	---
          3
          4	Hello {{ page.rdf }}
+
+## 5. Build the Page and Check our Result
+
+Now we are set to create our Jekyll site with one page for each RDF resource.
+To build the page we only need to run `bundle exec jekyll serve`. (You can find more build option in [the Jekyll documentation](https://jekyllrb.com/docs/usage/).)
+Now Jekyll builds the pages an starts a minimal web server which is available under [`http://localhost:4000`](http://localhost:4000).
+If you open this address in you browser you can see pages for each of the RDF resources as shown below.
+
+    Index of /
+
+                   Name                          Last modified              Size
+    Parent Directory                   2018/07/03 16:20                   -
+    Abraham.html                       2018/07/03 16:34                   33
+    Bart.html                          2018/07/03 16:34                   30
+    Herb.html                          2018/07/03 16:34                   30
+    Homer.html                         2018/07/03 16:34                   31
+    Lisa.html                          2018/07/03 16:34                   30
+    Maggie.html                        2018/07/03 16:34                   32
+    Marge.html                         2018/07/03 16:34                   31
+    Moe.html                           2018/07/03 16:34                   29
+    Mona.html                          2018/07/03 16:34                   30
+    Patty.html                         2018/07/03 16:34                   31
+    README.md                          2018/07/03 16:33                   5279
+    Selma.html                         2018/07/03 16:34                   31
+    TheSimpsons.html                   2018/07/03 16:34                   37
+    rdfsites/                          2018/07/03 16:20                   -
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    WEBrick/1.3.1 (Ruby/2.3.3/2016-11-21)
+    at localhost:4000
+
+If you open one of the pages you can see the evaluated template as we have defined it in the previous step (*4. Create a Jekyll-RDF Template*).
+
+    Hello http://example.org/Bart
