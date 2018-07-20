@@ -8,3 +8,5 @@ plugins:
 jekyll_rdf:
     path: "_data/graph.ttl"
     default_template: "default"
+    class_template_mappings:
+        "http://www.ifi.uio.no/INF3580/family#Family": "family"

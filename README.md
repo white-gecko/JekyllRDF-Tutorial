@@ -100,3 +100,51 @@ If you open this address in you browser you can see pages for each of the RDF re
 If you open one of the pages you can see the evaluated template as we have defined it in the previous step (*4. Create a Jekyll-RDF Template*).
 
     Hello http://example.org/Bart
+
+## 6. Specify Templates for Classes and Display RDF Properties
+
+So far we only display the IRI of an RDF Resource but we don't actually use the data encoded in the RDF Graph.
+We will now build a template which will only apply for the RDF Class `Family` in our graph.
+To tell Jekyll RDF which template to use for this class we create a `class_template_mappings` section in our `_config.yml` as follows:
+
+    …
+    jekyll_rdf:
+        …
+        class_template_mappings:
+            "http://www.ifi.uio.no/INF3580/family#Family": "family"
+
+Now we also need to define the layout accordingly. We create a new file called `family.html` in the `_layouts` directory with the content as shown below.
+In the lines 1 and 2 we again see the minimal YAML front matter.
+In line 4 we define a heading which prints the variable `page.rdf` which will result in the IRI of the currently rendered RDF Resource.
+In line 8 we execute the `rdf_property` filter on the page's RDF Model (`page.rdf`). As first parameter we set the IRI of the property which we want to retrieve in angle brackets. The second parameter, which is the language parameter is omitted. The third parameter is set to `true`, which tells the filter to return a list of results rather then a single result.
+By using the `assign`-tag we assign the result of the filter to a new variable called `members`.
+Notice that we have embraced this line with curly braces and percent signs, because the result is not to be shown on the page. (Learn more about the liquid syntax for objects, tags, and filters in the [Liquid documentation](https://shopify.github.io/liquid/basics/introduction/).)
+The lines 9 to 11 are a loop for iterating over the entries in the list `members`, the individual entries are assigned to the variable `member`.
+In line 10 we do the output. For the HTML-Link-Tag we specify the hyper link to point to `{{ member.page_url }}` which will bring us to the HTML Page for the respective RDF Resource.
+Within the HTML-Link-Tag we again apply the `rdf_property` filter for the `foaf:name` of the respective RDF Resource. This time we directly return the result as output to the page.
+
+    $ cat -n family.html
+        1	---
+        2	---
+        3
+        4	<h1>{{ page.rdf }}</h1>
+        5
+        6	<h2>Family Members</h2>
+        7	<ul>
+        8	    {% assign members = page.rdf | rdf_property: "<http://www.ifi.uio.no/INF3580/family#hasFamilyMember>", nil, true %}
+        9	    {% for member in members %}
+        10	    <li><a href="{{ member.page_url }}">{{ member | rdf_property: "<http://xmlns.com/foaf/0.1/name>" }}</a></li>
+        11	    {% endfor %}
+        12	</ul>
+
+If you open the page `TheSimpsons.html` you can see the evaluated template.
+
+    http://example.org/TheSimpsons
+
+    Family Members
+
+      • Lisa Simpson
+      • Maggie Simpson
+      • Bart Simpson
+      • Homer Simpson
+      • Marge Simpson
