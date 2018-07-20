@@ -10,3 +10,4 @@ jekyll_rdf:
     default_template: "default"
     class_template_mappings:
         "http://www.ifi.uio.no/INF3580/family#Family": "family"
+        "http://xmlns.com/foaf/0.1/Person": "person"

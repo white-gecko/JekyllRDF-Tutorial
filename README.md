@@ -148,3 +148,81 @@ If you open the page `TheSimpsons.html` you can see the evaluated template.
       • Bart Simpson
       • Homer Simpson
       • Marge Simpson
+
+## 7. Define Prefixes and Execute SPARQL Queries
+
+Now we define another layout to be applied for the individual persons in our knowledge base.
+Similar to the previous step (*6. Specify Templates for Classes and Display RDF Properties*), we add a new line to our `_config.yml` to specify the RDF Class IRI followed by the layouts name.
+
+    …
+    jekyll_rdf:
+        …
+        class_template_mappings:
+            "http://www.ifi.uio.no/INF3580/family#Family": "family"
+            "http://xmlns.com/foaf/0.1/Person": "person"
+
+The next thing to do is to create the according file `person.html` in the `_layouts` directory. This time we are also introducing the `query` filter and the possibility to use prefix definitions.
+In the lines 1 to 3 we see the YAML front matter. This time it is not empty, instead we define the location of a file which is holding a prefix definition. You can find this file below.
+In line 5 we again apply the `rdf_property` filter. This time we can use the prefixed-form `foaf:name` instead of the full IRI `<http://xmlns.com/foaf/0.1/name>`.
+In line 6 we just output the IRI of the curent RDF Resource and in line 10 we print the value of the `foaf:age` property.
+From line 15 to 23 we use the `capture`-tag to define a new variabel `siblings_query` and the enclosed lines (line 16 to 22) are assigned as the value of the variable.
+The lines 16 to 22 are a standard SPARQL query with a projection (`SELECT`-part) and a selection (`WHERE`-part) with two triple patterns and a `UNION`.
+The only thing special is, that the variable `?resourceUri` will be bound during the execution.
+In line 24 we apply the `sparql_query` filter on the page's RDF Model (`page.rdf`) and provide the variable `siblings_query` as first argument.
+This filter executes the query on the RDF Graph while it binds `?resourceUri` to the input resource, which is `page.rdf` in our case.
+As a result of the execution the filter returns the a result-set, which we assign to the variable `siblings` using the `assign`-tag.
+The lines 25 to 27 are a loop for iterating over the result-set, the individual result-rows are assigned to the variable `row`.
+In line 26 we do the output. The value of the SPARQL variable `?sibling` is now available under `row.sibling`.
+For the HTML-Link-Tag we specify the hyper link to point to `{{ row.sibling.page_url }}` which will bring us to the HTML Page for the respective RDF Resource.
+Within the HTML-Link-Tag we again apply the `rdf_property` filter for the `foaf:name` of the respective RDF Resource.
+
+    $ cat -n _layouts/person.html
+         1	---
+         2	rdf_prefix_path: "_data/prefixes.sparql"
+         3	---
+         4
+         5	<h1>{{ page.rdf | rdf_property: "foaf:name" }}</h1>
+         6	{{ page.rdf }}
+         7
+         8	<dl>
+         9	    <dt>Age:</dt>
+        10	    <dd>{{ page.rdf | rdf_property: "foaf:age" }}</dd>
+        11	</dl>
+        12
+        13	<h2>Siblings</h2>
+        14	<ul>
+        15	    {% capture siblings_query %}
+        16	    SELECT ?sibling WHERE {
+        17	        {
+        18	            ?resourceUri fam:hasBrother ?sibling
+        19	        } UNION {
+        20	            ?resourceUri fam:hasSister ?sibling
+        21	        }
+        22	    }
+        23	    {% endcapture %}
+        24	    {% assign siblings = page.rdf | sparql_query: siblings_query %}
+        25	    {% for row in siblings %}
+        26	    <li><a href="{{ row.sibling.page_url }}">{{ row.sibling | rdf_property: "foaf:name" }}</a></li>
+        27	    {% endfor %}
+        28	</ul>
+
+Prefixes can be defined using the according SPARQL syntax. The prefix mappings can be places in a file which is then included into a layout using the `rdf_prefix_path` key in the YAML [front matter](https://jekyllrb.com/docs/frontmatter/). Once defined, the prefixes can be used in all filters provided by Jekyll-RDF.
+
+    $ cat _data/prefixes.sparql
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX fam: <http://www.ifi.uio.no/INF3580/family#>
+
+
+If you open the page `Lisa.html` you can see the evaluated template.
+
+    Lisa Simpson
+
+    http://example.org/Lisa
+
+    Age:
+        8
+
+    Siblings
+
+      • Bart Simpson
+      • Maggie Simpson

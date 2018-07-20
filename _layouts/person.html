@@ -1,0 +1,28 @@
+---
+rdf_prefix_path: "_data/prefixes.sparql"
+---
+
+<h1>{{ page.rdf | rdf_property: "foaf:name" }}</h1>
+{{ page.rdf }}
+
+<dl>
+    <dt>Age:</dt>
+    <dd>{{ page.rdf | rdf_property: "foaf:age" }}</dd>
+</dl>
+
+<h2>Siblings</h2>
+<ul>
+    {% capture siblings_query %}
+    SELECT ?sibling WHERE {
+        {
+            ?resourceUri fam:hasBrother ?sibling
+        } UNION {
+            ?resourceUri fam:hasSister ?sibling
+        }
+    }
+    {% endcapture %}
+    {% assign siblings = page.rdf | sparql_query: siblings_query %}
+    {% for row in siblings %}
+    <li><a href="{{ row.sibling.page_url }}">{{ row.sibling | rdf_property: "<http://xmlns.com/foaf/0.1/name>" }}</a></li>
+    {% endfor %}
+</ul>
