@@ -1,5 +1,8 @@
 # Jekyll-RDF Tutorial
 
+[![Jekyll RDF Basic Tutorial](VideoFrame.png)](https://vimeo.com/283525074)
+[Jekyll RDF Basic Tutorial](https://vimeo.com/283525074) on [Vimeo](https://vimeo.com).
+
 ## Preparation
 
 - Install [Ruby](https://www.ruby-lang.org/) >= 2.1
