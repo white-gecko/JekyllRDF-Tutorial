@@ -23,7 +23,7 @@ Now we are going to install Jekyll-RDF into the current directory using Bundler.
     source "https://rubygems.org"
 
     group :jekyll_plugins do
-        gem "jekyll-rdf", ">= 3.0.0.a"
+        gem "jekyll-rdf", ">= 3.1.1.a"
     end
 
     $ bundle install --path .vendor/bundle
